@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">TikTakToe</string>
+
+    <string name="protocol">https://</string>
+    <string name="domain">generic-game-service.herokuapp.com</string>
+    <string name="base_path">/Game</string>
+    <string name="create_game_path">/</string>
+    <string name="join_game_path">/%is/join</string>
+    <string name="poll_game_path">/%is/poll</string>
+    <string name="game_service_key">OzvIa676yG</string>
 </resources>
