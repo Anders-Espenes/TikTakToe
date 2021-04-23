@@ -1,17 +1,15 @@
 package com.example.tiktaktoe
 
 import android.util.Log
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.tiktaktoe.Api.GameService
 import com.example.tiktaktoe.Api.data.Game
-import com.google.gson.Gson
-import junit.framework.Assert
-
+import com.example.tiktaktoe.Api.data.GameState
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
+import java.lang.Thread.sleep
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -20,24 +18,54 @@ import org.junit.Assert.*
  */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
-    private val TAG = "Test"
+    private val TAG = "TEST"
     var gameState: Game? = null
-    val firstPlayer: String = "Ola Nordman"
-    val secondPlayer: String = "Sven Svenske"
-    val startingGameState = listOf(listOf(0, 0, 0), listOf(0, 0, 0), listOf(0, 0, 0))
-
+    private val firstPlayer: String = "Ola Nordman"
+    private val secondPlayer: String = "Sven Svenske"
+    private val startingGameState: GameState = listOf(listOf(0, 0, 0), listOf(0, 0, 0), listOf(0, 0, 0))
 
     @Test
     fun createGameTest() {
-        GameService.createGame(firstPlayer, startingGameState) {
-                state: Game?, err:Int? ->
-            gameState = state
-            assertNotNull(state)
-            assertNotNull(state?.gameId)
+        Log.i(TAG, "CreateGameTest")
+        var gotRequest = false
+        GameService.createGame(firstPlayer, startingGameState) { state: Game?, err: Int? ->
+            if(err != null) {
+                Log.e(TAG, "Error code: $err")
+            }
+            checkGameNotNull(state)
             assertEquals(firstPlayer, state?.players?.get(0))
-            assertEquals("{\"nameValuePairs\":{\"player\":\"Ola Nordman\",\"state\": [[0,0,0],[0,0,0],[0,0,0]]}}", Gson().toJson(state))
+            assertEquals(startingGameState, state?.state)
+
+            gameState = state
+            gotRequest = true
         }
+        sleep(1000) // Wait 2 sec for the response
+        assert(gotRequest)  // Check if tests in the request response where run
     }
 
+    @Test
+    fun joinGameTest() {
+        var gotRequest = false
+
+        GameService.joinGame(secondPlayer, gameState!!.gameId) { state: Game?, err: Int? ->
+            if(err != null) {
+                throw Exception("Error code: $err")
+            }
+            checkGameNotNull(state)
+            assertNotNull(firstPlayer, state?.players?.get(0))
+            assertEquals(gameState?.gameId, state?.gameId ) // Check if joined game id is correct
+            gotRequest = true
+        }
+
+        sleep(2000)
+        assert(gotRequest)  // Check if tests in the request response where run
+    }
+
+    // Check if object have values
+    private fun checkGameNotNull(state: Game?) {
+        assertNotNull(state)
+        assertNotNull(state?.gameId)
+        assertNotNull(state?.state)
+    }
 
 }

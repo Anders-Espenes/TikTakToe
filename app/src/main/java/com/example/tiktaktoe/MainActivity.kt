@@ -29,14 +29,24 @@ class MainActivity : AppCompatActivity() {
         val firstPlayer: String = "Ola Nordman"
         val secondPlayer: String = "Sven Svenske"
         val startingState: GameState = listOf(listOf(0, 0, 0), listOf(0, 0, 0), listOf(0, 0, 0))
+        lateinit var gameId: String
         GameService.createGame(firstPlayer, startingState) { state: Game?, err: Int? ->
             if (err != null)
-                Log.e(TAG, "Error occurred")
+                Log.e(TAG, "Error Code: $err")
             else {
                 Log.d(TAG, "Created Game")
-                gameState = state
+                if (state != null) {
+                    gameId = state.gameId
+                    gameState = state
+                    GameService.joinGame(secondPlayer, gameId) { state: Game?, err: Int? ->
+                        if(err != null)
+                            Log.e(TAG, "Error Code: $err")
+                        else {
+                            Log.d(TAG, "Joined Game")
+                        }
+                    }
+                }
             }
-
         }
     }
 }

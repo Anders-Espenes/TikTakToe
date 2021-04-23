@@ -1,10 +1,15 @@
 package com.example.tiktaktoe
 
+import android.util.Log
 import com.example.tiktaktoe.Api.GameService
 import com.example.tiktaktoe.Api.data.Game
+import com.example.tiktaktoe.Api.data.GameState
+import com.google.gson.Gson
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
+import org.junit.Assert
 import org.junit.Test
+import java.util.concurrent.CountDownLatch
 
 /**
  * Example local unit test, which will execute on the development machine (host).
