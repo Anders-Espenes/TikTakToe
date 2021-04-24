@@ -51,7 +51,14 @@ class MainActivity : AppCompatActivity() {
                                     if(err != null)
                                         Log.e(TAG, "Error Code: $err")
                                     else {
-                                        Log.d(TAG, "Updated Game: ${game2?.state.toString()}")
+                                        Log.d(TAG, "Return Update Game: ${game2?.state.toString()}")
+                                        GameService.pollGame(gameState!!.gameId) {game3: Game?, err2: Int? ->
+                                            if(err2 != null)
+                                                Log.e(TAG, "Error Code: $err2")
+                                            else {
+                                                Log.d(TAG, "Polled Game: ${game3?.state.toString()}")
+                                            }
+                                        }
                                     }
 
                                 }
