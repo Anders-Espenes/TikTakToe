@@ -19,7 +19,7 @@ object GameManager {
             if(err != null) {   // Error code is returned
                errorHandler(err)
             } else {    // Success
-                player
+               state = game
             }
         }
     }
@@ -57,7 +57,17 @@ object GameManager {
         }
     }
 
+    // Give messages dependent on error message received
     private fun errorHandler(err: Int){
-       
+        when (err){
+            404 -> Toast.makeText(context, "Couldn't find game!", Toast.LENGTH_LONG).show()
+            406, 511 -> Toast.makeText(context, "API key not accepted!", Toast.LENGTH_LONG).show()
+            409 -> Toast.makeText(context, "Game is full!", Toast.LENGTH_LONG).show()
+            500, 503 ->
+                Toast.makeText(context, "Server error, try again later!", Toast.LENGTH_LONG).show()
+            else ->
+                Toast.makeText(context, "Something went wrong!", Toast.LENGTH_LONG).show()
+
+        }
     }
 }
