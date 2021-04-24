@@ -38,11 +38,24 @@ class MainActivity : AppCompatActivity() {
                 if (state != null) {
                     gameId = state.gameId
                     gameState = state
-                    GameService.joinGame(secondPlayer, gameId) { state: Game?, err: Int? ->
-                        if(err != null)
-                            Log.e(TAG, "Error Code: $err")
+                    GameService.joinGame(secondPlayer, gameId) { game1: Game?, err1: Int? ->
+                        if(err1 != null)
+                            Log.e(TAG, "Error Code: $err1")
                         else {
                             Log.d(TAG, "Joined Game")
+                            if (game1 != null) {
+                                gameState = state
+                                gameState?.state = listOf(listOf(0, 1, 0), listOf(0, 2, 0), listOf(0, 0, 0))
+                                Log.d(TAG, "Updated Game: ${gameState?.state.toString()}")
+                                GameService.updateGame(gameState!!) { game2: Game?, err: Int? ->
+                                    if(err != null)
+                                        Log.e(TAG, "Error Code: $err")
+                                    else {
+                                        Log.d(TAG, "Updated Game: ${game2?.state.toString()}")
+                                    }
+
+                                }
+                            }
                         }
                     }
                 }

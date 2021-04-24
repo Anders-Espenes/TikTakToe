@@ -7,5 +7,6 @@
     <string name="create_game_path">/</string>
     <string name="join_game_path">/%s/join</string>
     <string name="poll_game_path">/%s/poll</string>
+    <string name="update_game_path">/%s/update</string>
     <string name="game_service_key">OzvIa676yG</string>
 </resources>

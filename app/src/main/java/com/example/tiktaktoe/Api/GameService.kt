@@ -44,6 +44,15 @@ object GameService {
                 context.getString(R.string.base_path),
                 context.getString(R.string.join_game_path)
             )
+        ),
+        // https://generic-game-service.herokuapp.com/Game/<gameId>/join
+        UPDATE_GAME(
+            "%1s%2s%3s%4s".format(
+                context.getString(R.string.protocol),
+                context.getString(R.string.domain),
+                context.getString(R.string.base_path),
+                context.getString(R.string.update_game_path)
+            )
         )
     }
 
@@ -90,6 +99,36 @@ object GameService {
         val requestData = JSONObject()
         requestData.put("player", playerId)
         requestData.put("gameId", gameId)
+
+        val request = object : JsonObjectRequest(Method.POST, url, requestData,
+            {
+                // Success game joined
+                val game = Gson().fromJson(it.toString(), Game::class.java)
+                callback(game, null)
+            }, {
+                // Error joining a game
+                callback(null, it.networkResponse.statusCode)
+            }) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-type"] = "application/json"
+                headers["Game-Service-Key"] = context.getString(R.string.game_service_key)
+                return headers
+            }
+        }
+        requestQue.add(request)
+    }
+
+    fun updateGame(game: Game, callback: GameServiceCallback) {
+        // Add gameId to URl
+        val url = APIEndpoints.UPDATE_GAME.url.format(game.gameId)
+        Log.d(TAG, "URL: $url")
+
+        // Add playername and gameId to request
+        val requestData = JSONObject()
+        requestData.put("", JSONArray(game.players)) // List of players
+        requestData.put("gameId", game.gameId)      // Game Id 
+        requestData.put("state", JSONArray(game.state))
 
         val request = object : JsonObjectRequest(Method.POST, url, requestData,
             {

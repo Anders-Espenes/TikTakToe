@@ -5,6 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.tiktaktoe.Api.GameService
 import com.example.tiktaktoe.Api.data.Game
 import com.example.tiktaktoe.Api.data.GameState
+import com.google.gson.Gson
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
@@ -16,13 +17,17 @@ import java.lang.Thread.sleep
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+var gameState: Game? = null // Passes gameState to next test, TODO: Find better solution
+
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
-    private val TAG = "TEST"
-    var gameState: Game? = null
+    private val TAG = "GameTag"
     private val firstPlayer: String = "Ola Nordman"
     private val secondPlayer: String = "Sven Svenske"
     private val startingGameState: GameState = listOf(listOf(0, 0, 0), listOf(0, 0, 0), listOf(0, 0, 0))
+
+    private var game1 :Game = Game(mutableListOf(firstPlayer, secondPlayer), "3ndo7j", startingGameState) //
+
 
     @Test
     fun createGameTest() {
@@ -35,11 +40,14 @@ class ExampleInstrumentedTest {
             checkGameNotNull(state)
             assertEquals(firstPlayer, state?.players?.get(0))
             assertEquals(startingGameState, state?.state)
+            
 
-            gameState = state
+            gameState = state   // update gamestate
             gotRequest = true
+
+            Log.i(TAG, Gson().toJson(state))
         }
-        sleep(1000) // Wait 2 sec for the response
+        sleep(1000) // Wait 1 sec for the response TODO: Find better solution
         assert(gotRequest)  // Check if tests in the request response where run
     }
 
@@ -52,13 +60,38 @@ class ExampleInstrumentedTest {
                 throw Exception("Error code: $err")
             }
             checkGameNotNull(state)
-            assertNotNull(firstPlayer, state?.players?.get(0))
+            assertEquals(firstPlayer, state?.players?.get(0))
+            assertEquals(secondPlayer, state?.players?.get(1))
             assertEquals(gameState?.gameId, state?.gameId ) // Check if joined game id is correct
             gotRequest = true
+            gameState = state   // Update gamestate
+
+            Log.i(TAG, Gson().toJson(state))
         }
 
-        sleep(2000)
+        sleep(1000)
         assert(gotRequest)  // Check if tests in the request response where run
+    }
+
+    @Test
+    fun updateGameTest() {
+        var gotRequest = false
+        game1.state = listOf(listOf(0, 1, 0), listOf(0, 2, 0), listOf(0, 0, 0))
+        game1.let {
+            GameService.updateGame(it) { state: Game?, err: Int? ->
+                if(err != null) {
+                    throw Exception("Error code: $err") //
+                }
+                checkGameNotNull(state)
+                assertEquals(game1.gameId, state?.gameId)
+                assertEquals(game1.players, state?.players) // Check if players are the same
+
+                Log.i(TAG, "UPDATE: ${Gson().toJson(state)}")
+                gotRequest = true
+            }
+        }
+        sleep(1000)
+        assert(gotRequest)
     }
 
     // Check if object have values
