@@ -45,6 +45,7 @@ object GameService {
                 context.getString(R.string.join_game_path)
             )
         ),
+
         // https://generic-game-service.herokuapp.com/Game/<gameId>/join
         UPDATE_GAME(
             "%1s%2s%3s%4s".format(
@@ -53,7 +54,15 @@ object GameService {
                 context.getString(R.string.base_path),
                 context.getString(R.string.update_game_path)
             )
-        )
+        ),
+
+        POLL_GAME(
+            "%1s%2s%3s%4s".format(
+                context.getString(R.string.protocol),
+                context.getString(R.string.domain),
+                context.getString(R.string.base_path),
+                context.getString(R.string.poll_game_path)
+        ))
     }
 
     // POST request to create a game on the API
@@ -90,6 +99,7 @@ object GameService {
         requestQue.add(request)
     }
 
+    // POST request to join a game on the API
     fun joinGame(playerId: String, gameId: String, callback: GameServiceCallback) {
         // Add gameId to URl
         val url = APIEndpoints.JOIN_GAME.url.format(gameId)
@@ -119,6 +129,7 @@ object GameService {
         requestQue.add(request)
     }
 
+    // POST request to update a game on the API
     fun updateGame(game: Game, callback: GameServiceCallback) {
         // Add gameId to URl
         val url = APIEndpoints.UPDATE_GAME.url.format(game.gameId)
@@ -139,6 +150,28 @@ object GameService {
                 // Error joining a game
                 callback(null, it.networkResponse.statusCode)
             }) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-type"] = "application/json"
+                headers["Game-Service-Key"] = context.getString(R.string.game_service_key)
+                return headers
+            }
+        }
+        requestQue.add(request)
+    }
+
+    // GET request to pull game state from the API
+    fun pollGame(gameId: String, callback: GameServiceCallback) {
+        val url = APIEndpoints.POLL_GAME.url.format(gameId) // Insert gameId in url
+        Log.d(TAG, "URL: $url")
+        val requestData = JSONObject()
+        requestData.put("gameId", gameId)
+        val request = object : JsonObjectRequest(Method.GET, url, requestData, {
+            val game = Gson().fromJson(it.toString(), Game::class.java)
+            callback(game, null)
+        }, {
+            callback(null, it.networkResponse.statusCode)
+        }) {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 headers["Content-type"] = "application/json"
