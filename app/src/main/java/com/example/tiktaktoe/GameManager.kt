@@ -6,8 +6,9 @@ import com.example.tiktaktoe.Api.data.Game
 import com.example.tiktaktoe.Api.data.GameState
 
 object GameManager {
-    var player:String? = null       // Client player name
+    var client:String? = null       // Client player name
     var state:GameState? = null     // Curent game state
+    var gameState:Game? = null
 
     private val context = App.context
 
@@ -18,8 +19,8 @@ object GameManager {
         GameService.createGame(player, startingGameState) { game: Game?, err: Int? ->
             if(err != null) {   // Error code is returned
                errorHandler(err)
-            } else {    // Success
-               state = game
+            } else if(game != null) {    // Success
+                gameState = game
             }
         }
     }
@@ -29,8 +30,8 @@ object GameManager {
         GameService.joinGame(player, gameId) { game: Game?, err: Int? ->
             if(err != null) {   // Error code is returned
                 errorHandler(err)
-            } else {    // Success
-
+            } else if (game != null) {    // Success
+                gameState = game
             }
         }
     }
@@ -40,8 +41,8 @@ object GameManager {
         GameService.updateGame(game) { game: Game?, err: Int? ->
             if(err != null) {   // Error code is returned
                 errorHandler(err)
-            } else {    // Success
-
+            } else if (game != null) {    // Success
+                gameState = game
             }
         }
     }
@@ -51,8 +52,8 @@ object GameManager {
         GameService.pollGame(gameId) { game: Game?, err: Int? ->
             if(err != null) {   // Error code is returned
                 errorHandler(err)
-            } else {    // Success
-
+            } else if (game != null) {    // Success
+                gameState = game
             }
         }
     }
