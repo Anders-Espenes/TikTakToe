@@ -3,6 +3,9 @@ package com.example.tiktaktoe
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.tiktaktoe.Api.GameService
 import com.example.tiktaktoe.Api.data.Game
 import com.example.tiktaktoe.Api.data.GameState
@@ -13,12 +16,19 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG: String = "MainActivity"
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(binding.navHostFragmentContainer.id) as NavHostFragment
+        navController = navHostFragment.findNavController()
+
 
         test()
     }

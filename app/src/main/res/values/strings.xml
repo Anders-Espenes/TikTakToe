@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TikTakToe</string>
+    <string name="app_name">TicTacToe</string>
 
     <string name="protocol">https://</string>
     <string name="domain">generic-game-service.herokuapp.com</string>
@@ -9,4 +9,9 @@
     <string name="poll_game_path">/%s/poll</string>
     <string name="update_game_path">/%s/update</string>
     <string name="game_service_key">OzvIa676yG</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tic_tac_toe_logo">Tic Tac Toe Logo</string>
+    <string name="create_game">Create Game</string>
+    <string name="join_game">Join Game</string>
 </resources>
