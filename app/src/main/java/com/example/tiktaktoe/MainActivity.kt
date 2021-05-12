@@ -10,9 +10,10 @@ import com.example.tiktaktoe.Api.GameService
 import com.example.tiktaktoe.Api.data.Game
 import com.example.tiktaktoe.Api.data.GameState
 import com.example.tiktaktoe.databinding.ActivityMainBinding
+import com.example.tiktaktoe.dialogs.GameDialogListener
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , GameDialogListener {
 
     private val TAG: String = "MainActivity"
 
@@ -31,6 +32,14 @@ class MainActivity : AppCompatActivity() {
 
 
         test()
+    }
+
+    override fun onDialogCreateGame(player: String) {
+        GameManager.createGame(player)
+    }
+
+    override fun onDialogJoinGame(player: String, gameId: String) {
+        TODO("Not yet implemented")
     }
 
     fun test() {
