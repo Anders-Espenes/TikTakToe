@@ -15,4 +15,7 @@
     <string name="create_game">Create Game</string>
     <string name="join_game">Join Game</string>
     <string name="type_player_name">Type player name</string>
+    <string name="player_1">Player 1</string>
+    <string name="vs">VS</string>
+    <string name="player_2">Player 2</string>
 </resources>

@@ -1,22 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.GameFragment">
-    
+
     <TextView
-        android:layout_width=""
-        android:layout_height=""
-    
-    <LinearLayout
-        android:id="@+id/gameBoard"
+        android:id="@+id/textLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:text="@string/app_name"
+        android:textSize="42sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf=""
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/playerTags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLogo">
+
+        <TextView
+            android:id="@+id/player1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:gravity="center"
+            android:text="@string/player_1"
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/vs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:gravity="center"
+            android:text="@string/vs"
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/player2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:gravity="center"
+            android:text="@string/player_2"
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/board_background"
+        android:columnCount="3"
+        android:rowCount="3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/playerTags">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn11"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/button"
+            android:layout_margin="2dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn12"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/button"
+            android:layout_margin="2dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn13"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/button"
+            android:layout_margin="2dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn21"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/button"
+            android:layout_margin="2dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn22"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/button"
+            android:layout_margin="2dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn23"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/button"
+            android:layout_margin="2dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn31"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/button"
+            android:layout_margin="2dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn32"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/button"
+            android:layout_margin="2dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn33"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/button"
+            android:layout_margin="2dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
