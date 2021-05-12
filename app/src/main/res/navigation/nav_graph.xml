@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.example.tiktaktoe.view.MenuFragment"
+        android:name="com.example.tiktaktoe.views.MenuFragment"
         android:label="menu_fragment"
         tools:layout="@layout/menu_fragment" />
 </navigation>

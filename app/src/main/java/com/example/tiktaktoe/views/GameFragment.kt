@@ -1,14 +1,15 @@
-package com.example.tiktaktoe.view
+package com.example.tiktaktoe.views
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.tiktaktoe.databinding.MenuFragmentBinding
+import com.example.tiktaktoe.databinding.GameFragmentBinding
 
-class MenuFragment : Fragment() {
-    private var _binding: MenuFragmentBinding? = null
+
+class GameFragment : Fragment() {
+    private var _binding: GameFragmentBinding? = null
     private val binding get() = _binding!!
 
 
@@ -17,8 +18,9 @@ class MenuFragment : Fragment() {
         container: ViewGroup?,
         saveInstanceState: Bundle?
     ): View? {
-        _binding = MenuFragmentBinding.inflate(layoutInflater, container, false)
+        _binding = GameFragmentBinding.inflate(layoutInflater, container, false)
         val view = binding.root
+
 
 
         return view
