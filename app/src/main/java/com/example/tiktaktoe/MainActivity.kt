@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() , GameDialogListener {
         var gameState: Game? = null
         val firstPlayer: String = "Ola Nordman"
         val secondPlayer: String = "Sven Svenske"
-        val startingState: GameState = listOf(listOf(0, 0, 0), listOf(0, 0, 0), listOf(0, 0, 0))
+        val startingState: GameState = mutableListOf(mutableListOf(0, 0, 0), mutableListOf(0, 0, 0), mutableListOf(0, 0, 0))
         lateinit var gameId: String
         GameService.createGame(firstPlayer, startingState) { state: Game?, err: Int? ->
             if (err != null)
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() , GameDialogListener {
                             Log.d(TAG, "Joined Game")
                             if (game1 != null) {
                                 gameState = state
-                                gameState?.state = listOf(listOf(0, 1, 0), listOf(0, 2, 0), listOf(0, 0, 0))
+                                gameState?.state = mutableListOf(mutableListOf(0, 2, 0), mutableListOf(0, 1, 0), mutableListOf(0, 0, 1))
                                 Log.d(TAG, "Updated Game: ${gameState?.state.toString()}")
                                 GameService.updateGame(gameState!!) { game2: Game?, err: Int? ->
                                     if(err != null)
