@@ -5,24 +5,23 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import com.example.tiktaktoe.databinding.DialogCreateGameBinding
+import com.example.tiktaktoe.databinding.DialogJoinGameBinding
 
-class CreateGameDialog : DialogFragment() {
-
+class JoinGameDialog : DialogFragment() {
     private lateinit var listener: GameDialogListener
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
         return activity?.let {
             val builder: AlertDialog.Builder = AlertDialog.Builder(it)
             val inflater = requireActivity().layoutInflater
-            val binding = DialogCreateGameBinding.inflate(inflater)
+            val binding = DialogJoinGameBinding.inflate(inflater)
 
             builder.apply {
-                setTitle("Create Game")
-                setPositiveButton("Create") { dialog, which ->
-                    if(binding.username.text.toString() != "") {
-                        listener.onDialogCreateGame(binding.username.text.toString())
+                setTitle("Join Game")
+                setPositiveButton("Join") { dialog, which ->
+                    // Check if input fields are empty
+                    if (binding.username.text.toString() != "" && binding.gameId.text.toString() != "") {
+                        listener.onDialogJoinGame(binding.username.text.toString(), binding.gameId.text.toString())
                     }
                 }
                 setNegativeButton("Cancel") { dialog, which ->
@@ -39,9 +38,8 @@ class CreateGameDialog : DialogFragment() {
         super.onAttach(context)
         try {
             listener = context as GameDialogListener
-        } catch (e:ClassCastException){
+        } catch (e: ClassCastException) {
             throw ClassCastException(("$context must implement GameDialogListener"))
         }
-
     }
 }

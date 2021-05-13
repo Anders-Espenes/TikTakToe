@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.tiktaktoe.R
 import com.example.tiktaktoe.databinding.MenuFragmentBinding
 import com.example.tiktaktoe.dialogs.CreateGameDialog
+import com.example.tiktaktoe.dialogs.JoinGameDialog
 import kotlinx.android.synthetic.main.menu_fragment.view.*
 
 class MenuFragment : Fragment() {
@@ -46,7 +47,9 @@ class MenuFragment : Fragment() {
 
     // Start joining a game
     private fun joinGame() {
-
+        val dlg = JoinGameDialog()
+        dlg.show(parentFragmentManager, "JoinGameDialogManager")
+        findNavController().navigate(R.id.action_menuFragment_to_gameFragment)
     }
 
 }

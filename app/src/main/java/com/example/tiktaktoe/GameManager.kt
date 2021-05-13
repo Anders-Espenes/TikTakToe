@@ -24,6 +24,7 @@ object GameManager {
             if (err != null) {   // Error code is returned
                 errorHandler(err)
             } else if (game != null) {    // Success
+                client = player
                 _gameState.value = game
             }
         }

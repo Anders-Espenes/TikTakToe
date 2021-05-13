@@ -46,7 +46,6 @@ class GameFragment : Fragment(), View.OnClickListener {
         GameManager.gameState.observe(viewLifecycleOwner, { game ->
             updateUi(game)
             gameState = game
-
         })
 
         return view
