@@ -1,6 +1,8 @@
 package com.example.tiktaktoe
 
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.tiktaktoe.Api.GameService
 import com.example.tiktaktoe.Api.data.Game
 import com.example.tiktaktoe.Api.data.GameState
@@ -8,7 +10,9 @@ import com.example.tiktaktoe.Api.data.GameState
 object GameManager {
     var client: String? = null       // Client player name
     var state: GameState? = null     // Curent game state
-    var gameState: Game? = null
+
+    private var _gameState = MutableLiveData<Game>()
+    val gameState: LiveData<Game> get() = _gameState
 
     private val context = App.context
 
@@ -20,7 +24,7 @@ object GameManager {
             if (err != null) {   // Error code is returned
                 errorHandler(err)
             } else if (game != null) {    // Success
-                gameState = game
+                _gameState.value = game
             }
         }
     }
@@ -31,7 +35,7 @@ object GameManager {
             if (err != null) {   // Error code is returned
                 errorHandler(err)
             } else if (game != null) {    // Success
-                gameState = game
+                _gameState.value = game
             }
         }
     }
@@ -42,7 +46,7 @@ object GameManager {
             if (err != null) {   // Error code is returned
                 errorHandler(err)
             } else if (game != null) {    // Success
-                gameState = game
+                _gameState.value = game
             }
         }
     }
@@ -53,7 +57,7 @@ object GameManager {
             if (err != null) {   // Error code is returned
                 errorHandler(err)
             } else if (game != null) {    // Success
-                gameState = game
+                _gameState.value = game
             }
         }
     }

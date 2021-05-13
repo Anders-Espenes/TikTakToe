@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.tiktaktoe.R
 import com.example.tiktaktoe.databinding.MenuFragmentBinding
 import com.example.tiktaktoe.dialogs.CreateGameDialog
 import kotlinx.android.synthetic.main.menu_fragment.view.*
@@ -37,9 +39,9 @@ class MenuFragment : Fragment() {
 
     // Start creating a game
     private fun createGame() {
-        //findNavController().navigate(R.id.action_menuFragment_to_createGameDialog)
         val dlg = CreateGameDialog()
         dlg.show(parentFragmentManager, "CreateGameDialogManager")
+        findNavController().navigate(R.id.action_menuFragment_to_gameFragment)
     }
 
     // Start joining a game
