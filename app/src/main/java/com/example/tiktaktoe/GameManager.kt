@@ -27,6 +27,16 @@ object GameManager {
     private var _winner = MutableLiveData<String>()
     val winner: LiveData<String> get() = _winner
 
+    private object Timer : CountDownTimer(gameDuration, pollingRate) {
+        override fun onFinish() {
+            _winner.value = "Tie"   // Game is a tie after 1 hour
+        }
+
+        override fun onTick(millisUntilFinished: Long) {
+            _gameState.value?.let { pollGame(it.gameId) }    // Start polling
+        }
+    }
+
 
     // Create a game
     fun createGame(player: String) {
@@ -50,13 +60,11 @@ object GameManager {
             if (err != null) {   // Error code is returned
                 errorHandler(err)
             } else if (game != null) {    // Success
+                if(game.state[0].isNullOrEmpty()) {
+                    game.state =
+                        mutableListOf(mutableListOf(0, 0, 0), mutableListOf(0, 0, 0), mutableListOf(0, 0, 0))
+                }
                 Log.d(TAG, "JOIN GAME: $game")
-                // Check if gameboard exists
-                if (!game.state.isNullOrEmpty()) game.state = mutableListOf(
-                    mutableListOf(0, 0, 0),
-                    mutableListOf(0, 0, 0),
-                    mutableListOf(0, 0, 0)
-                )
                 _gameState.value = game
                 startPolling() // Start polling updates
             }
@@ -80,12 +88,10 @@ object GameManager {
             if (err != null) {   // Error code is returned
                 errorHandler(err)
             } else if (game != null) {    // Success
-                // Check if gameboard exists
-                if (!game.state.isNullOrEmpty()) game.state = mutableListOf(
-                    mutableListOf(0, 0, 0),
-                    mutableListOf(0, 0, 0),
-                    mutableListOf(0, 0, 0)
-                )
+                if(game.state[0].isNullOrEmpty()) {
+                    game.state =
+                        mutableListOf(mutableListOf(0, 0, 0), mutableListOf(0, 0, 0), mutableListOf(0, 0, 0))
+                }
                 _gameState.value = game
                 when (checkWinner(game.state)) { // Check for winner
                     1 -> _winner.value = game.players[0] // Player 1
@@ -136,21 +142,10 @@ object GameManager {
     }
 
     private fun startPolling() {
-        if (_gameState.value?.gameId != null) timer.start()
+        if (_gameState.value?.gameId != null) Timer.start()
     }
 
-    private fun stopPolling() {
-        timer.cancel()
-    }
-
-    object timer : CountDownTimer(gameDuration, pollingRate) {
-        override fun onFinish() {
-            _winner.value = "Tie"   // Game is a tie after 1 hour
-        }
-
-        override fun onTick(millisUntilFinished: Long) {
-            _gameState.value?.let { pollGame(it.gameId) }    // Start polling
-        }
-
+    fun stopPolling() {
+        Timer.cancel()
     }
 }

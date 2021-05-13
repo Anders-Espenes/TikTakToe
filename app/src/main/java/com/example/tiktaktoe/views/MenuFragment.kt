@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.tiktaktoe.R
 import com.example.tiktaktoe.databinding.MenuFragmentBinding
 import com.example.tiktaktoe.dialogs.CreateGameDialog
 import com.example.tiktaktoe.dialogs.JoinGameDialog
