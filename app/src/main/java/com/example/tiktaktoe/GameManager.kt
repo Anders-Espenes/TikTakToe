@@ -1,6 +1,5 @@
 package com.example.tiktaktoe
 
-import com.example.tiktaktoe.App
 import android.os.CountDownTimer
 import android.util.Log
 import android.widget.Toast
@@ -53,7 +52,11 @@ object GameManager {
             } else if (game != null) {    // Success
                 Log.d(TAG, "JOIN GAME: $game")
                 // Check if gameboard exists
-                if(!game.state.isNullOrEmpty()) game.state = mutableListOf(mutableListOf(0, 0, 0), mutableListOf(0, 0, 0), mutableListOf(0, 0, 0))
+                if (!game.state.isNullOrEmpty()) game.state = mutableListOf(
+                    mutableListOf(0, 0, 0),
+                    mutableListOf(0, 0, 0),
+                    mutableListOf(0, 0, 0)
+                )
                 _gameState.value = game
                 startPolling() // Start polling updates
             }
@@ -78,7 +81,11 @@ object GameManager {
                 errorHandler(err)
             } else if (game != null) {    // Success
                 // Check if gameboard exists
-                if(!game.state.isNullOrEmpty()) game.state = mutableListOf(mutableListOf(0, 0, 0), mutableListOf(0, 0, 0), mutableListOf(0, 0, 0))
+                if (!game.state.isNullOrEmpty()) game.state = mutableListOf(
+                    mutableListOf(0, 0, 0),
+                    mutableListOf(0, 0, 0),
+                    mutableListOf(0, 0, 0)
+                )
                 _gameState.value = game
                 when (checkWinner(game.state)) { // Check for winner
                     1 -> _winner.value = game.players[0] // Player 1
@@ -129,7 +136,7 @@ object GameManager {
     }
 
     private fun startPolling() {
-       if(_gameState.value?.gameId != null) timer.start()
+        if (_gameState.value?.gameId != null) timer.start()
     }
 
     private fun stopPolling() {

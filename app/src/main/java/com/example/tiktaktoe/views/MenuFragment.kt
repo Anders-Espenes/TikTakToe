@@ -40,14 +40,12 @@ class MenuFragment : Fragment() {
     private fun createGame() {
         val dlg = CreateGameDialog()
         dlg.show(parentFragmentManager, "CreateGameDialogManager")
-        findNavController().navigate(R.id.action_menuFragment_to_gameFragment)
     }
 
     // Start joining a game
     private fun joinGame() {
         val dlg = JoinGameDialog()
         dlg.show(parentFragmentManager, "JoinGameDialogManager")
-        findNavController().navigate(R.id.action_menuFragment_to_gameFragment)
     }
 
 }

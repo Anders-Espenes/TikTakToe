@@ -5,6 +5,8 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
+import com.example.tiktaktoe.R
 import com.example.tiktaktoe.databinding.DialogCreateGameBinding
 
 class CreateGameDialog : DialogFragment() {
@@ -23,6 +25,7 @@ class CreateGameDialog : DialogFragment() {
                 setPositiveButton("Create") { dialog, which ->
                     if(binding.username.text.toString() != "") {
                         listener.onDialogCreateGame(binding.username.text.toString())
+                        findNavController().navigate(R.id.action_menuFragment_to_gameFragment)
                     }
                 }
                 setNegativeButton("Cancel") { dialog, which ->
