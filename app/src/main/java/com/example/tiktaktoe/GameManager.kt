@@ -1,5 +1,8 @@
 package com.example.tiktaktoe
 
+import com.example.tiktaktoe.App
+import android.os.CountDownTimer
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,8 +11,14 @@ import com.example.tiktaktoe.Api.data.Game
 import com.example.tiktaktoe.Api.data.GameState
 
 object GameManager {
+
+    private const val TAG = "GameManager"
+    private const val pollingRate: Long = 5000     // 5 Second polling rate
+    private const val gameDuration: Long = 3600000 // 1 Hour game duration
+    private val context = App.context
+
     var client: String? = null       // Client player name
-    var state: GameState? = null     // Curent game state
+    var state: GameState? = null     // Current game state
 
     // Contain game state, current players, gameId and board state
     private var _gameState = MutableLiveData<Game>()
@@ -19,8 +28,6 @@ object GameManager {
     private var _winner = MutableLiveData<String>()
     val winner: LiveData<String> get() = _winner
 
-
-    private val context = App.context
 
     // Create a game
     fun createGame(player: String) {
@@ -33,6 +40,7 @@ object GameManager {
             } else if (game != null) {    // Success
                 client = player
                 _gameState.value = game
+                startPolling()   // Start polling updates
             }
         }
     }
@@ -43,18 +51,22 @@ object GameManager {
             if (err != null) {   // Error code is returned
                 errorHandler(err)
             } else if (game != null) {    // Success
+                Log.d(TAG, "JOIN GAME: $game")
+                // Check if gameboard exists
+                if(!game.state.isNullOrEmpty()) game.state = mutableListOf(mutableListOf(0, 0, 0), mutableListOf(0, 0, 0), mutableListOf(0, 0, 0))
                 _gameState.value = game
+                startPolling() // Start polling updates
             }
         }
     }
 
     // Update a game
     fun updateGame(game: Game) {
-        GameService.updateGame(game) { game: Game?, err: Int? ->
+        GameService.updateGame(game) { updatedGame: Game?, err: Int? ->
             if (err != null) {   // Error code is returned
                 errorHandler(err)
-            } else if (game != null) {    // Success
-                _gameState.value = game
+            } else if (updatedGame != null) {    // Success
+                _gameState.value = updatedGame
             }
         }
     }
@@ -65,8 +77,10 @@ object GameManager {
             if (err != null) {   // Error code is returned
                 errorHandler(err)
             } else if (game != null) {    // Success
+                // Check if gameboard exists
+                if(!game.state.isNullOrEmpty()) game.state = mutableListOf(mutableListOf(0, 0, 0), mutableListOf(0, 0, 0), mutableListOf(0, 0, 0))
                 _gameState.value = game
-                when(checkWinner(game.state)) { // Check for winner
+                when (checkWinner(game.state)) { // Check for winner
                     1 -> _winner.value = game.players[0] // Player 1
                     2 -> _winner.value = game.players[1] // Player 2
                     null -> _winner.value = "Tie"        // Tied game
@@ -89,30 +103,47 @@ object GameManager {
         }
     }
 
-    private fun checkWinner(gameState: GameState) : Int? {
+    private fun checkWinner(gameState: GameState): Int? {
         // True if three input values are equal and not 0
-        fun check(first: Int, second: Int, third: Int) : Boolean {
+        fun check(first: Int, second: Int, third: Int): Boolean {
             return (first != 0 && first == second && first == third)
         }
         // Horizontal check
         for (i in 0..2) {
-            if(check(gameState[i][0], gameState[i][1], gameState[i][2]))
+            if (check(gameState[i][0], gameState[i][1], gameState[i][2]))
                 return gameState[i][0]
         }
         // Vertical check
         for (i in 0..2) {
-            if(check(gameState[0][i], gameState[1][i], gameState[2][i]))
+            if (check(gameState[0][i], gameState[1][i], gameState[2][i]))
                 return gameState[0][i]
         }
         // Diagonal check
-        if(check(gameState[0][0], gameState[1][1], gameState[2][2]))
+        if (check(gameState[0][0], gameState[1][1], gameState[2][2]))
             return gameState[0][0]
-        if(check(gameState[0][2], gameState[1][1], gameState[2][0]))
+        if (check(gameState[0][2], gameState[1][1], gameState[2][0]))
             return gameState[0][2]
 
         // Tie check, returns 0 if any remains, returns null of board is filled
-       return gameState.flatten().firstOrNull{it == 0}
+        return gameState.flatten().firstOrNull { it == 0 }
     }
 
+    private fun startPolling() {
+       if(_gameState.value?.gameId != null) timer.start()
+    }
 
+    private fun stopPolling() {
+        timer.cancel()
+    }
+
+    object timer : CountDownTimer(gameDuration, pollingRate) {
+        override fun onFinish() {
+            _winner.value = "Tie"   // Game is a tie after 1 hour
+        }
+
+        override fun onTick(millisUntilFinished: Long) {
+            _gameState.value?.let { pollGame(it.gameId) }    // Start polling
+        }
+
+    }
 }

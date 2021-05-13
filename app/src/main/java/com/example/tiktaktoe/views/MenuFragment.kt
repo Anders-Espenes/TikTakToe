@@ -21,7 +21,7 @@ class MenuFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         saveInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = MenuFragmentBinding.inflate(layoutInflater, container, false)
         val view = binding.root
 

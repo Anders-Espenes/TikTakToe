@@ -1,17 +1,23 @@
 package com.example.tiktaktoe.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.tiktaktoe.Api.data.Game
 import com.example.tiktaktoe.Api.data.GameState
 import com.example.tiktaktoe.GameManager
+import com.example.tiktaktoe.R
 import com.example.tiktaktoe.databinding.GameFragmentBinding
+import com.example.tiktaktoe.dialogs.GameOverDialog
 
 
 class GameFragment : Fragment(), View.OnClickListener {
+
+    private val TAG = "GameFragment"
 
     private var _binding: GameFragmentBinding? = null
     private val binding get() = _binding!!
@@ -24,10 +30,9 @@ class GameFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         saveInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = GameFragmentBinding.inflate(layoutInflater, container, false)
         val view = binding.root
-
 
         // Set onClickListener for the buttons
         binding.apply {
@@ -46,6 +51,13 @@ class GameFragment : Fragment(), View.OnClickListener {
         GameManager.gameState.observe(viewLifecycleOwner, { game ->
             updateUi(game)
             gameState = game
+            Log.d(TAG, "Updated Game: $game")
+        })
+
+        // Declare a winner
+        GameManager.winner.observe(viewLifecycleOwner, { winner ->
+            GameOverDialog(winner).show(parentFragmentManager, "GameOverDialogManager")
+            findNavController().navigate(R.id.action_gameFragment_to_menuFragment)
         })
 
         return view
@@ -71,6 +83,13 @@ class GameFragment : Fragment(), View.OnClickListener {
 
     private fun updateUi(game: Game) {
        updateBoard(game.state)
+        if (game.players.size == 2) {    // Set player names
+            binding.player1.text = game.players[0]
+            binding.player2.text = game.players[1]
+            // Set if client is player 1 or 2
+            if(GameManager.client == game.players[0]) playerValue = 1
+            else playerValue = 2
+        }
     }
 
     // Update board values displayed

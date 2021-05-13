@@ -7,16 +7,18 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.example.tiktaktoe.R
 
-class GameOverDialog : DialogFragment() {
+class GameOverDialog(s: String) : DialogFragment() {
+
+    private var winner :String = s
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder: AlertDialog.Builder = AlertDialog.Builder(it)
 
             builder.apply {
-                setTitle("Game over")
-                setNeutralButton("Menu") { dialog, which ->
-                    findNavController().navigate(R.id.action_gameOverDialog_to_menuFragment)
+                setTitle("Winner $winner")
+                setNeutralButton("Close") { dialog, which ->
+                    dialog.cancel()
                 }
             }
 
