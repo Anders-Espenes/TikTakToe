@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() , GameDialogListener {
     }
 
     override fun onDialogJoinGame(player: String, gameId: String) {
-        TODO("Not yet implemented")
+        GameManager.joinGame(player, gameId)
     }
 
     fun test() {
