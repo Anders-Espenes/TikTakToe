@@ -24,7 +24,7 @@ class GameServiceTest {
     private val firstPlayer: String = "Ola Nordman"
     private val secondPlayer: String = "Sven Svenske"
     private val startingGameState: GameState =
-        listOf(listOf(0, 0, 0), listOf(0, 0, 0), listOf(0, 0, 0))
+        mutableListOf(mutableListOf(0, 0, 0), mutableListOf(0, 0, 0), mutableListOf(0, 0, 0))
 
     private var game1: Game =
         Game(mutableListOf(firstPlayer, secondPlayer), "3ndo7j", startingGameState) //
@@ -78,7 +78,8 @@ class GameServiceTest {
     fun updateGameTest() {
         var gotRequest = false
 
-        game1.state = listOf(randomListOfNumbers(), randomListOfNumbers(), randomListOfNumbers())
+        game1.state =
+            mutableListOf(randomListOfNumbers(), randomListOfNumbers(), randomListOfNumbers())
         game1.let {
             GameService.updateGame(it) { state: Game?, err: Int? ->
                 if (err != null) {
@@ -126,8 +127,8 @@ class GameServiceTest {
     }
 
     // Return list of three numbers between 0-2
-    private fun randomListOfNumbers(): List<Int> {
-        return (0..2).shuffled().take(4)
+    private fun randomListOfNumbers(): MutableList<Int> {
+        return (0..2).shuffled().take(4).toMutableList()
     }
 
 }

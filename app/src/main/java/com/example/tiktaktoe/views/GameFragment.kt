@@ -60,7 +60,6 @@ class GameFragment : Fragment(), View.OnClickListener {
             GameOverDialog(winner).show(parentFragmentManager, "GameOverDialogManager")
             findNavController().navigate(R.id.action_gameFragment_to_menuFragment)
         })
-
         return view
     }
 
