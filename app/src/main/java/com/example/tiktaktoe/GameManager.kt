@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.tiktaktoe.Api.GameService
 import com.example.tiktaktoe.Api.data.Game
 import com.example.tiktaktoe.Api.data.GameState
+import com.example.tiktaktoe.App.Companion.context
 
 object GameManager {
 
@@ -17,7 +18,6 @@ object GameManager {
     private val context = App.context
 
     var client: String? = null       // Client player name
-    var state: GameState? = null     // Current game state
 
     // Contain game state, current players, gameId and board state
     private var _gameState = MutableLiveData<Game>()
@@ -60,7 +60,7 @@ object GameManager {
             if (err != null) {   // Error code is returned
                 errorHandler(err)
             } else if (game != null) {    // Success
-                if(game.state[0].isNullOrEmpty()) {
+                if(game.state[0].isNullOrEmpty()) { // Check if game board exists
                     game.state =
                         mutableListOf(mutableListOf(0, 0, 0), mutableListOf(0, 0, 0), mutableListOf(0, 0, 0))
                 }
@@ -73,14 +73,14 @@ object GameManager {
 
     // Update a game
     fun updateGame(game: Game) {
-        GameService.updateGame(game) { updatedGame: Game?, err: Int? ->
-            if (err != null) {   // Error code is returned
-                errorHandler(err)
-            } else if (updatedGame != null) {    // Success
-                _gameState.value = updatedGame
+            GameService.updateGame(game) { updatedGame: Game?, err: Int? ->
+                if (err != null) {   // Error code is returned
+                    errorHandler(err)
+                } else if (updatedGame != null) {    // Success
+                    _gameState.value = updatedGame
+                }
             }
         }
-    }
 
     // Poll a game
     fun pollGame(gameId: String) {
@@ -88,11 +88,13 @@ object GameManager {
             if (err != null) {   // Error code is returned
                 errorHandler(err)
             } else if (game != null) {    // Success
-                if(game.state[0].isNullOrEmpty()) {
+                if(game.state[0].isNullOrEmpty()) { // Check if game board exists
                     game.state =
                         mutableListOf(mutableListOf(0, 0, 0), mutableListOf(0, 0, 0), mutableListOf(0, 0, 0))
                 }
-                _gameState.value = game
+
+                _gameState.value = game // Update local game state
+
                 when (checkWinner(game.state)) { // Check for winner
                     1 -> _winner.value = game.players[0] // Player 1
                     2 -> _winner.value = game.players[1] // Player 2
