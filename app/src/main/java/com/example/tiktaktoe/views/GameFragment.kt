@@ -65,7 +65,7 @@ class GameFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v != null) {
-            when(v.id) {
+            when (v.id) {
                 binding.btn00.id -> gameState?.state?.get(0)?.set(0, playerValue)
                 binding.btn01.id -> gameState?.state?.get(0)?.set(1, playerValue)
                 binding.btn02.id -> gameState?.state?.get(0)?.set(2, playerValue)
@@ -82,12 +82,12 @@ class GameFragment : Fragment(), View.OnClickListener {
     }
 
     private fun updateUi(game: Game) {
-       updateBoard(game.state)
+        updateBoard(game.state)
         if (game.players.size == 2) {    // Set player names
             binding.player1.text = game.players[0]
             binding.player2.text = game.players[1]
             // Set if client is player 1 or 2
-            if(GameManager.client == game.players[0]) playerValue = 1
+            if (GameManager.client == game.players[0]) playerValue = 1
             else playerValue = 2
         }
     }
@@ -111,8 +111,8 @@ class GameFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun checkValue(value: Int): String{
-        return when(value) {
+    private fun checkValue(value: Int): String {
+        return when (value) {
             0 -> ""
             1 -> "X"
             2 -> "O"

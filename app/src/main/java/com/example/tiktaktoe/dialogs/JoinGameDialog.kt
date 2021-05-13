@@ -5,6 +5,8 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
+import com.example.tiktaktoe.R
 import com.example.tiktaktoe.databinding.DialogJoinGameBinding
 
 class JoinGameDialog : DialogFragment() {
@@ -25,6 +27,7 @@ class JoinGameDialog : DialogFragment() {
                             binding.username.text.toString(),
                             binding.gameId.text.toString()
                         )
+                        findNavController().navigate(R.id.action_menuFragment_to_gameFragment)
                     }
                 }
                 setNegativeButton("Cancel") { dialog, which ->
