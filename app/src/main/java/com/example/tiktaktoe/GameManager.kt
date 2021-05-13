@@ -19,7 +19,8 @@ object GameManager {
     // Create a game
     fun createGame(player: String) {
         // Starting gamestate
-        val startingGameState: GameState = mutableListOf(mutableListOf(0, 0, 0), mutableListOf(0, 0, 0), mutableListOf(0, 0, 0))
+        val startingGameState: GameState =
+            mutableListOf(mutableListOf(0, 0, 0), mutableListOf(0, 0, 0), mutableListOf(0, 0, 0))
         GameService.createGame(player, startingGameState) { game: Game?, err: Int? ->
             if (err != null) {   // Error code is returned
                 errorHandler(err)

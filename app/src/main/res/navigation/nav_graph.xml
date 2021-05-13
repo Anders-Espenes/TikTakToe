@@ -18,5 +18,18 @@
         android:id="@+id/gameFragment"
         android:name="com.example.tiktaktoe.views.GameFragment"
         android:label="game_fragment"
-        tools:layout="@layout/game_fragment" />
+        tools:layout="@layout/game_fragment" >
+        <action
+            android:id="@+id/action_gameFragment_to_gameOverDialog"
+            app:destination="@id/gameOverDialog" />
+    </fragment>
+    <dialog
+        android:id="@+id/gameOverDialog"
+        android:name="com.example.tiktaktoe.dialogs.GameOverDialog"
+        android:label="dialog_game_over"
+        tools:layout="@layout/dialog_game_over" >
+        <action
+            android:id="@+id/action_gameOverDialog_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </dialog>
 </navigation>
