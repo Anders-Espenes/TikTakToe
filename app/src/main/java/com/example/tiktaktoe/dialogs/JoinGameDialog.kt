@@ -21,7 +21,10 @@ class JoinGameDialog : DialogFragment() {
                 setPositiveButton("Join") { dialog, which ->
                     // Check if input fields are empty
                     if (binding.username.text.toString() != "" && binding.gameId.text.toString() != "") {
-                        listener.onDialogJoinGame(binding.username.text.toString(), binding.gameId.text.toString())
+                        listener.onDialogJoinGame(
+                            binding.username.text.toString(),
+                            binding.gameId.text.toString()
+                        )
                     }
                 }
                 setNegativeButton("Cancel") { dialog, which ->
