@@ -56,6 +56,7 @@ class GameFragment : Fragment(), View.OnClickListener {
 
         // Declare a winner
         GameManager.winner.observe(viewLifecycleOwner, { winner ->
+            GameManager.stopPolling()   // Stop polling updates
             GameOverDialog(winner).show(parentFragmentManager, "GameOverDialogManager")
             findNavController().navigate(R.id.action_gameFragment_to_menuFragment)
         })
@@ -87,8 +88,7 @@ class GameFragment : Fragment(), View.OnClickListener {
             binding.player1.text = game.players[0]
             binding.player2.text = game.players[1]
             // Set if client is player 1 or 2
-            if (GameManager.client == game.players[0]) playerValue = 1
-            else playerValue = 2
+            playerValue = if (GameManager.client == game.players[0]) 1 else 2
         }
     }
 
