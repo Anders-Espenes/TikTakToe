@@ -33,8 +33,6 @@ class MenuFragment : Fragment() {
             joinGame()
         }
 
-
-
         return view
     }
 
