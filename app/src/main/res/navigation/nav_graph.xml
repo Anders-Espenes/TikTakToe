@@ -9,5 +9,14 @@
         android:id="@+id/menuFragment"
         android:name="com.example.tiktaktoe.views.MenuFragment"
         android:label="menu_fragment"
-        tools:layout="@layout/menu_fragment" />
+        tools:layout="@layout/menu_fragment" >
+        <action
+            android:id="@+id/action_menuFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.example.tiktaktoe.views.GameFragment"
+        android:label="game_fragment"
+        tools:layout="@layout/game_fragment" />
 </navigation>
